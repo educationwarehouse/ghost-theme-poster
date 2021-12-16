@@ -11,7 +11,7 @@ Create a new integration in the admin panel, where you get the admin key. It's t
 git clone https://github.com/educationwarehouse/ghost-theme-poster
 cd ghost-theme-poster 
 pip install -r requirements.txt
-echo example.tld: YOUR:TOKENFROMANEWINTEGRATIONINGHOSTADMIN > .ghost-keys 
+echo example.tld: YOUR:TOKENFROMANEWINTEGRATIONINGHOSTADMIN >> .ghost-keys 
 ```
 
 ## Configuration
@@ -20,7 +20,7 @@ Create a new folder with the name of the domain (example.tld) and unpack the con
 
 Repeat this for every domain you'll be creating ghost templates for. 
 
-Change the files as you please, and perform the execution to: 
+Change the files as you please, and perform `invoke push example.tld` to: 
  1. pack the files into `example.tld.zip` 
  1. upload the theme folder to the ghost domain 
  1. read error or confirmation from the console.
