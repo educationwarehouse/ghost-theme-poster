@@ -22,13 +22,13 @@ def push(ctx, dir, domain=None, yes=False):
 
     if not domain:
         # take any input, cleanse whitespace, lower it, if empty default to 'n' and test if it's 'yes', or 'y'
-        i_am_sure = (
+        i_am_sure = yes or (
             input("Warning: You are about to upload to production, are you sure? [yN]")
             .strip()
             .lower()
             or "n"
         ) in ("yes", "y")
-        if yes or i_am_sure:
+        if i_am_sure:
             print("Proceding push to production...")
         else:
             print("Either invalid, or the wiser choice...")
