@@ -5,6 +5,16 @@ import httpx
 import jwt
 import yaml
 
+HEADER = "\033[95m"
+OKBLUE = "\033[94m"
+OKCYAN = "\033[96m"
+OKGREEN = "\033[92m"
+WARNING = "\033[93m"
+FAIL = "\033[91m"
+ENDCOLOR = "\033[0m"
+BOLD = "\033[1m"
+UNDERLINE = "\033[4m"
+
 
 def create_token(domain):
     """
@@ -45,7 +55,7 @@ def create_token(domain):
     help={
         "dir": "Directory name, the last folder name is used as the default domain. e.g. /home/x/some.domain.com",
         "domain": "Which domain to push to, defaults to dir. e.g. demo.domain.com; "
-                  "if domain is not given, production is assumed. ",
+        "if domain is not given, production is assumed. ",
         "yes": "Override the prompt that asks for permission to upload.",
     }
 )
@@ -58,13 +68,13 @@ def push(ctx, dir, domain=None, yes=False):
     if not domain:
         # take any input, cleanse whitespace, lower it, if empty default to 'n' and test if it's 'yes', or 'y'
         i_am_sure = yes or (
-                input("Warning: You are about to upload to production, are you sure? [yN]")
-                .strip()
-                .lower()
-                or "n"
+            input("Warning: You are about to upload to production, are you sure? [yN]")
+            .strip()
+            .lower()
+            or "n"
         ) in ("yes", "y")
         if i_am_sure:
-            print("Proceding push to production...")
+            print("Proceeding with push to production...")
         else:
             print("Either invalid, or the wiser choice...")
             exit(1)
@@ -92,6 +102,19 @@ def push(ctx, dir, domain=None, yes=False):
         verify=False,
     )
     try:
-        print(yaml.dump(resp.json()))
+        data = resp.json()
+        print(yaml.dump(data))
+
+        try:
+            theme = data["themes"][0]
+
+            print(
+                # text in yellow or green, depending on activeness:
+                (OKGREEN if theme["active"] else WARNING)
+                + f"Theme '{theme['name']}' on {domain} is {'active' if theme['active'] else 'inactive'}"
+                + ENDCOLOR
+            )
+        except:
+            pass
     except:
         print(resp.text)
